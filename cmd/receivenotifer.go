@@ -11,7 +11,7 @@ type notice struct {
 	Name	string
 }
 
-func startListen(url string) error {
+func startAgent(url string) error {
 	http.HandleFunc("/api/notice", notice_handle)
 
 	err := http.ListenAndServe(url, nil)

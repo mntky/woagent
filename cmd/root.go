@@ -62,7 +62,7 @@ func Run() error {
 	fmt.Println("start woagent")
 
 	url := viper.GetString("listen")
-	err := startListen(url)
+	err := startAgent(url)
 	return err
 }
 
