@@ -17,7 +17,7 @@ package cmd
 
 import (
   "fmt"
- // "os"
+	"woagent/pkg"
 
   "github.com/spf13/cobra"
   "github.com/spf13/viper"
@@ -39,7 +39,9 @@ func NewWoagent() *cobra.Command {
 
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringP("listen", "l", "", "receive notifer address")
+	rootCmd.PersistentFlags().StringP("join", "j", "", "join woyendetsa cluster")
 	viper.BindPFlag("listen", rootCmd.PersistentFlags().Lookup("listen"))
+	viper.BindPFlag("join", rootCmd.PersistentFlags().Lookup("join"))
 	return rootCmd
 }
 
@@ -61,8 +63,19 @@ func initConfig() {
 func Run() error {
 	fmt.Println("start woagent")
 
-	url := viper.GetString("listen")
-	err := startAgent(url)
-	return err
+	//url := viper.GetString("listen")
+	if masterurl := viper.GetString("join"); masterurl == "" {
+		panic("require -j [master address]")
+	}
+	err := pkg.Join(viper.GetString("join"), viper.GetString("listen"))
+	if err != nil {
+		return err
+	}
+	err = startAgent(viper.GetString("listen"))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
