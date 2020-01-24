@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	//"fmt"
+	"fmt"
 
 	"gopkg.in/lxc/go-lxc.v2"
 )
@@ -14,17 +14,22 @@ func newcontainer(name string) (*lxc.Container, error) {
 	return c, nil
 }
 
-func Create(name string) error {
-	c, err := newcontainer(name)
+func Create(obj interface{}) error {
+	spec, ok := obj.(LxcSpec)
+	if !ok {
+		fmt.Println("spec struct unmatch")
+	}
+	fmt.Println(ok)
+	c, err := newcontainer(spec.Name)
 	if err != nil {
 		return err
 	}
 	defer c.Release()
 
 	createtemplate := lxc.TemplateOptions {
-		Distro:		"debian",
-		Release:	"buster",
-		Arch:			"amd64",
+		Distro:		spec.Distro,
+		Release:	spec.Release,
+		Arch:			spec.Arch,
 	}
 
 	err = c.Create(createtemplate)

@@ -34,5 +34,5 @@ func notice_handle(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(noticedata.Name)
 	pkg.ReferSpec(noticedata.Name)
 
-	w.Write([]byte("okk"))
+	w.Write([]byte("notice receive ok"))
 }

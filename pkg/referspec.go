@@ -5,7 +5,15 @@ import (
 	"bytes"
 	"net/http"
 	"io/ioutil"
+	"encoding/json"
 )
+
+type LxcSpec struct {
+	Name		string	`json:"name"`
+	Distro	string	`json:"distro"`
+	Release	string	`json:"release"`
+	Arch		string	`json:"arch"`
+}
 
 //TODO viperでmasterのアドレス取ってくる
 func ReferSpec(speckey string) error {
@@ -29,7 +37,13 @@ func ReferSpec(speckey string) error {
 
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
+
+	lxcspec := &LxcSpec{}
+	json.Unmarshal(body, lxcspec)
+	err = Create(*lxcspec)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }
-
-
