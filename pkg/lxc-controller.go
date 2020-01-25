@@ -27,11 +27,15 @@ func Create(obj interface{}) error {
 	defer c.Release()
 
 	createtemplate := lxc.TemplateOptions {
+		Template:	spec.Name,
 		Distro:		spec.Distro,
 		Release:	spec.Release,
 		Arch:			spec.Arch,
+		FlushCache:	true,
+		DisableGPGValidation: true,
 	}
 
+	fmt.Println("create")
 	err = c.Create(createtemplate)
 	if err != nil {
 		return err
