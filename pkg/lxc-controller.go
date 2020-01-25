@@ -26,13 +26,17 @@ func Create(obj interface{}) error {
 	}
 	defer c.Release()
 
+	fmt.Println(spec)
+
 	createtemplate := lxc.TemplateOptions {
-		Template:	spec.Name,
+		Template:	"download",
+		//Backend:	lxc.Directory,
 		Distro:		spec.Distro,
 		Release:	spec.Release,
 		Arch:			spec.Arch,
-		FlushCache:	true,
-		DisableGPGValidation: true,
+		//Variant: "default",
+		FlushCache: false,
+		DisableGPGValidation: false,
 	}
 
 	fmt.Println("create")

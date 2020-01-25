@@ -40,6 +40,8 @@ func ReferSpec(speckey string) error {
 
 	lxcspec := &LxcSpec{}
 	json.Unmarshal(body, lxcspec)
+	fmt.Println("debug----")
+	fmt.Println(string(body))
 	err = Create(*lxcspec)
 	if err != nil {
 		fmt.Println(err)
